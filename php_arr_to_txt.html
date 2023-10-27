@@ -58,7 +58,7 @@ etc."></textarea>
     const arr_data = document.querySelector('textarea[name="arr_data"]').value;
     const user_path = document.querySelector('textarea[name="user_path"]').value;
 
-    fetch('php_arr_to_txt.php', {
+    fetch('api/php_arr_to_txt.php', {
       method: 'POST',
       body: new URLSearchParams({
         arr_data: arr_data,
