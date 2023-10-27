@@ -7,10 +7,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	} else if (empty($arr_data)) {
 		die("Plase input you php array such as".PHP_EOL."'cctv1' => 'CCTV1SD_1200', //CCTV1");
 	}
-$pattern = "/.*['\"](\w+)['\"].*=.+\/\/(.+)/";
+	$pattern = "/.*['\"](\w+)['\"].*=.+\/\/(.+)/";
 	if(preg_match_all($pattern,$arr_data,$matches)){
 		for($i=0;$i<count($matches[1]);$i++){
-        echo $matches[2][$i].','.$user_path.$matches[1][$i].PHP_EOL;
+			echo $matches[2][$i].','.$user_path.$matches[1][$i].PHP_EOL;
 		}
 	}
 }
