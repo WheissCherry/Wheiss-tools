@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta content="text/html" charset="UTF-8">
+<title>Wheiss tool</title>
+<link rel="Shortcut Icon" href="./ico/illust_73070421.ico" type="image/x-icon" />
+</head>
+<body>
+<h4>A small tool for converting PHP id_array into txt-format list.</h4>
+<style>
+  textarea {
+    width: 500px;
+    height: 250px;
+    resize: none;
+  }
+
+  .submit-button {
+    margin-left: 279px;
+  }
+
+  .copy-button {
+    margin-left: 10px;
+  }
+
+  .user_path-textarea {
+    width: 500px;
+    height: 20px;
+  }
+</style>
+
+<form action="api/php_arr_to_txt.php" method="POST">
+	<textarea name="user_path" class="user_path-textarea" placeholder="https://path/filename?id="></textarea>
+	<br>
+	<textarea name="arr_data" placeholder="'cctv1' => 'CCTV1SD_1200', //CCTV1
+'cctv2' => 'CCTV2SD_1200', //CCTV2
+etc."></textarea>
+  <br>
+	<h4>Author: <a href="https://www.wheiss.com/">Wheiss </a> Version: 1.0</h4><button type="submit" class="submit-button">Submit</button>
+  <button onclick="copyToClipboard()" class="copy-button">Copy</button>
+</form>
+<div>
+  <textarea id="result" readonly placeholder="CCTV1,https://path/filename?id=cctv1
+CCTV2,https://path/filename?id=cctv2
+etc."></textarea>
+</div>
+
+<script>
+  function copyToClipboard() {
+    const resultTextarea = document.getElementById('result');
+    resultTextarea.select();
+    document.execCommand('copy');
+  }
+
+  const form = document.querySelector('form');
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const arr_data = document.querySelector('textarea[name="arr_data"]').value;
+    const user_path = document.querySelector('textarea[name="user_path"]').value;
+
+    fetch('php_arr_to_txt.php', {
+      method: 'POST',
+      body: new URLSearchParams({
+        arr_data: arr_data,
+        user_path: user_path
+      })
+    })
+    .then(response => response.text())
+    .then(processedData => {
+      const resultTextarea = document.getElementById('result');
+      resultTextarea.value = processedData;
+    });
+  });
+</script>
+</body>
+</html>
