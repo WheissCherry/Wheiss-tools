@@ -1,0 +1,90 @@
+body {
+	background-color: #fcf2f6;
+	font-family: Arial, sans-serif;
+	text-align: center;
+	padding: 0px;
+}
+h5 {
+	color: #333;
+	font-size: 16px;
+	margin:-0.5% 0% 0.25% 0%;
+	padding: 4px 0px;
+	background-color: #fcdeee;
+	box-shadow: 0px 0px 10px 4px #fcdeee;
+	border: 0.2mm solid #fcdeee;
+}
+h1 {
+	color: #333;
+	font-size: 36px;
+	margin:-0.5% 0% 0.25% 0%;
+	padding: 4px 0px;
+	background-color: #fcdeee;
+	box-shadow: 0px 0px 10px 4px #fcdeee;
+	border: 0.2mm solid #fcdeee;
+}
+p {
+	color: #333;
+	font-size: 18px;
+	text-align: center;
+	margin:18% 34% 18% 34%;
+	padding: 4px 8px;
+	font-style: italic;
+	background-color: #fcdeee;
+	border-radius: 20px;
+	box-shadow: 0px 0px 10px 6px #fcdeee;
+	border: 0.2mm solid #deedfc;
+}
+p1 {
+	color: #333;
+	font-size: 14px;
+	text-align: left;
+	margin:0.25% 0% 0.25% 0%;
+	padding: 4px 8px;
+	background-color: #fcdeee;
+	border-radius: 20px;
+	box-shadow: 0px 0px 10px 4px #fcdeee;
+	border: 0.1mm solid #333;
+}
+p2 {
+	color: #333;
+	font-size: 14px;
+	text-align: left;
+	margin:0.25% 0.25% 0.25% 0.25%;
+	padding: 4px 8px;
+	font-style: italic;
+	cursor: pointer;
+	background-color: #fcdeee;
+	border-radius: 20px;
+	box-shadow: 0px 0px 10px 4px #fcdeee;
+	border: 0.1mm solid #333;
+}
+textarea {
+	width: 460px;
+	height: 250px;
+	resize: none;
+	margin:0.25% 0% 0.25% 0%;
+	padding: 4px 8px;
+	background-color: #fcdeee;
+	font-style: italic;
+	box-shadow: 0px 0px 10px 4px #fcdeee;
+	border: 0.8mm solid #deedfc;
+	border-radius: 20px;
+}
+input {
+	width: 16px;
+	height: 16px;
+	margin:0.25% 0% 0.25% 0%;
+	text-align: center;
+	cursor: pointer;
+}
+button {
+	margin:0.25% 0% 0.25% 0%;
+	padding: 4px 8px;
+	background-color: #fcdeee;
+	font-size: 14px;
+	font-style: italic;
+	border-radius: 20px;
+	cursor: pointer;
+	box-shadow: 0px 0px 10px 4px #fcdeee;
+	border: 0.1mm solid #333;
+}
