@@ -1,90 +1,124 @@
+/*主体样式*/
 body {
-	background-color: #fcf2f6;
-	font-family: Arial, sans-serif;
+	background-color: #fff0f5;
+	color: #333;
+	font:100% "Comic Sans MS", cursive, sans-serif;
 	text-align: center;
-	padding: 0px;
+}
+a:-webkit-any-link {
+	text-decoration:none;
+}/*未访问链接*/
+a:link {
+	color:#b399ff;
+}
+/*已访问链接*/
+a:visited {
+	color:#696969;
+}
+/*鼠标移动到链接上*/
+a:hover {
+	color:#ff80cb;
+}
+/*鼠标点击链接时*/
+a:active {
+	color:#e6cfe6;
+}
+/*h1-h6标题样式*/
+h1 {
+	font-size: 2.25em;
+	margin:-0.5% 0% 1% 0%;
+	padding: 4px 0px;
+	background-color: #ffd9e6;
+	box-shadow: 0px 0px 10px 4px #ffd9e6;
+}
+h2 {
+	font-size: 2em;
+}
+h3 {
+	font-size: 1.75em;
+}
+h4 {
+	font-size: 1.5em;
 }
 h5 {
-	color: #333;
-	font-size: 16px;
-	margin:-0.5% 0% 0.25% 0%;
+	font-size: 1.25em;
+	margin:-0.5% 0% 0.6% 0%;
 	padding: 4px 0px;
-	background-color: #fcdeee;
-	box-shadow: 0px 0px 10px 4px #fcdeee;
-	border: 0.2mm solid #fcdeee;
+	background-color: #ffd9e6;
+	box-shadow: 0px 0px 10px 4px #ffd9e6;
 }
-h1 {
-	color: #333;
-	font-size: 36px;
-	margin:-0.5% 0% 0.25% 0%;
-	padding: 4px 0px;
-	background-color: #fcdeee;
-	box-shadow: 0px 0px 10px 4px #fcdeee;
-	border: 0.2mm solid #fcdeee;
+h6 {
+	font-size: 1em;
 }
+/*段落样式*/
 p {
-	color: #333;
+	background-color: #ffd9e6;
+	border-radius: 20px;
+	box-shadow: 0px 0px 10px 6px #ffd9e6;
+}
+.text404 {
 	font-size: 18px;
-	text-align: center;
-	margin:18% 34% 18% 34%;
-	padding: 4px 8px;
+	padding: 2px 0px;
+	margin: 18.6% 33%;
 	font-style: italic;
-	background-color: #fcdeee;
-	border-radius: 20px;
-	box-shadow: 0px 0px 10px 6px #fcdeee;
-	border: 0.2mm solid #deedfc;
 }
-p1 {
-	color: #333;
+.p1 {/*段落1样式*/
+	width: 36px;
+	height: 16px;
 	font-size: 14px;
-	text-align: left;
 	margin:0.25% 0% 0.25% 0%;
 	padding: 4px 8px;
-	background-color: #fcdeee;
+	background-color: #ffd9e6;
 	border-radius: 20px;
-	box-shadow: 0px 0px 10px 4px #fcdeee;
+	box-shadow: 0px 0px 10px 4px #ffd9e6;
 	border: 0.1mm solid #333;
 }
-p2 {
-	color: #333;
+.p2 {/*段落2样式*/
 	font-size: 14px;
-	text-align: left;
-	margin:0.25% 0.25% 0.25% 0.25%;
+	margin:0.125% 0.25% 0.125% 0.25%;
 	padding: 4px 8px;
-	font-style: italic;
 	cursor: pointer;
-	background-color: #fcdeee;
+	background-color: #ffd9e6;
 	border-radius: 20px;
-	box-shadow: 0px 0px 10px 4px #fcdeee;
+	box-shadow: 0px 0px 10px 4px #ffd9e6;
 	border: 0.1mm solid #333;
 }
+/*文本区域样式*/
 textarea {
-	width: 460px;
-	height: 250px;
+	background-color: #fff0f5;
 	resize: none;
-	margin:0.25% 0% 0.25% 0%;
-	padding: 4px 8px;
-	background-color: #fcdeee;
-	font-style: italic;
-	box-shadow: 0px 0px 10px 4px #fcdeee;
-	border: 0.8mm solid #deedfc;
-	border-radius: 20px;
+	font:80% "Comic Sans MS", cursive, sans-serif;
+	margin:0.125% 0% 0.125% 0%;
+	padding: 3px 6px;
+	box-shadow: 0px 0px 10px 4px #ffd9e6;
+	border: medium solid #ffd9e6;
+	border-radius: 16px;
 }
+textarea:focus {
+	  outline: none;
+}
+/*表单样式*/
 input {
 	width: 16px;
 	height: 16px;
 	margin:0.25% 0% 0.25% 0%;
-	text-align: center;
 	cursor: pointer;
 }
+input:focus {
+	  outline: none;
+}
+/*按钮样式*/
 button {
-	margin:0.25% 0% 0.25% 0%;
+	margin:0.125% 0% 0.125% 0%;
 	padding: 4px 8px;
-	background-color: #fcdeee;
+	background-color: #ffd9e6;
+	font:100% "Comic Sans MS", cursive, sans-serif;
 	font-size: 14px;
-	font-style: italic;
 	border-radius: 20px;
 	cursor: pointer;
-	box-shadow: 0px 0px 10px 4px #fcdeee;
+	box-shadow: 0px 0px 10px 4px #ffd9e6;
 	border: 0.1mm solid #333;
+}
+button:focus {
+	  outline: none;
 }
