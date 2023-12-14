@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta content="text/html" charset="UTF-8">
+<meta name="viewport" content="width=502">
+<title>m3u and txt convert - Wheiss' tools</title>
+<link rel="Shortcut Icon" href="ico/illust_73070421.webp" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" href="css/default.css">
+</head>
+<body>
+<div>
+<h5 style="user-select:none !important;" id="un_copy_Para">A tool for converting m3u or txt format list into each other.</h5>
+</div>
+<style>
+	.user_path_1-textarea {
+		width: 460px;
+		height: 18.4px;
+	}
+	.user_path_2-textarea {
+		width: 460px;
+		height: 36.8px;
+	}
+	.list_data-textarea {
+		width: 460px;/*宽度*/
+		height: 198px;/*高度*/
+	}
+	.result-textarea {
+		width: 460px;
+		height: 198px;
+		background-color: #e6e6fa;
+	}
+	.submit-button {
+		margin:0.25% 8px 0.25% 200px;
+		padding: 4px 8px;
+	}
+	.copy-button {
+		margin:0.25% 0.25% 0.25% 8px;
+		padding: 4px 12px;
+		background-color: #e6e6fa;
+	}
+</style>
+
+<form action="api/m3u_txt_convert.php" method="POST">
+<div>
+	<textarea name="user_path_1" class="user_path_1-textarea" placeholder="[inessential,address]https://host/filename" maxlength="100"></textarea><br>
+	<textarea name="user_path_2" class="user_path_2-textarea" placeholder="[inessential,User-Agent]Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36" maxlength="150"></textarea><br>
+	<textarea name="user_path_3" class="user_path_1-textarea" placeholder="[inessential,Referer]https://xxx/xxx" maxlength="100"></textarea>
+</div>
+<div>
+	<textarea name="list_data" class="list_data-textarea" placeholder="[inessential]m3u or txt data."></textarea>
+</div>
+<div>
+	<input type="checkbox" name="scheme" value="1" id="scheme">
+		<label for="scheme"><span class="p2" style="user-select:none !important;" id="un_copy_Para">Without group</span></label>
+	<button type="submit" class="submit-button" style="user-select:none !important;" id="un_copy_Para">Submit</button>
+	<button onclick="copyToClipboard()" class="copy-button" style="user-select:none !important;" id="un_copy_Para">Copy</button>
+</div>
+</form>
+<div>
+	<textarea id="result" class="result-textarea" readonly placeholder="Automatically identify different formats and delete duplicate links."></textarea>
+</div>
+	<hr>
+<div>
+	<span class="p1" style="user-select:none !important;" id="un_copy_Para"><a href="javascript:;" onClick="javascript:history.back(-1);">Previous</a></span>
+	<span class="p1" style="user-select:none !important;" id="un_copy_Para">Author:&nbsp;<a href="https://www.wheiss.com/">Wheiss</a>&emsp;Source Code:&nbsp;<a href="https://github.com/WheissCherry/Wheiss-tools/">Github</a>&emsp;Version:&nbsp;1.0</span>
+	<span class="p1" style="user-select:none !important;" id="un_copy_Para"><a href="/">Home</a></span>
+</div>
+
+<script>
+	function copyToClipboard() {
+		const resultTextarea = document.getElementById('result');
+		resultTextarea.select();
+		document.execCommand('copy');
+	}
+
+	const form = document.querySelector('form');
+	form.addEventListener('submit', function(event) {
+		event.preventDefault();
+
+		const list_data = document.querySelector('textarea[name="list_data"]').value;
+		const user_path_1 = document.querySelector('textarea[name="user_path_1"]').value;
+		const user_path_2 = document.querySelector('textarea[name="user_path_2"]').value;
+		const user_path_3 = document.querySelector('textarea[name="user_path_3"]').value;
+		 const scheme = document.querySelector('input[name="scheme"]').checked ? document.querySelector('input[name="scheme"]').value : '';
+		fetch('api/m3u_txt_convert.php', {
+			method: 'POST',
+			body: new URLSearchParams({
+				list_data: list_data,
+				user_path_1: user_path_1,
+				user_path_2: user_path_2,
+				user_path_3: user_path_3,
+				scheme: scheme
+})
+		})
+		.then(response => response.text())
+		.then(processedData => {
+			const resultTextarea = document.getElementById('result');
+			resultTextarea.value = processedData;
+		});
+	});
+	document.getElementById("un_copy_Para").oncopy = function(event) {
+		event.clipboardData.setData("text/plain", "");
+		event.preventDefault();
+	};
+</script>
+</body>
+</html>
