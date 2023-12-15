@@ -55,24 +55,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 				}
 			}
 			#以下实现url去重及转换
-			preg_match_all('/#EXTINF.+group-title="(.+)",(.+)\n([^\n#]+)/',$list_data,$matches);
-			$result = $matches[1][0].',#genre#'.PHP_EOL.$matches[2][0].','.$matches[3][0].PHP_EOL;
-			for ($i=1;$i<count($matches[1]);$i++){
-				if (strpos($result,$matches[3][$i])){//url已存在则去重
-					continue;
-				} else {
-					$group = ($matches[1][$i] == $matches[1][$i-1])?'':$matches[1][$i].',#genre#'.PHP_EOL;//分组处理
-					$result .= $group.$matches[2][$i].','.$matches[3][$i].PHP_EOL;
+			if ($scheme||strpos($list_data,'group-title')==false){//不保留分组或无分组
+				preg_match_all('/#EXTINF.+,(.+)\n([^\n#]+)/',$list_data,$matches);
+				$result = '';
+				for ($i=0;$i<count($matches[1]);$i++){
+					if (strpos($result,$matches[2][$i])){//url已存在则去重
+						continue;
+					} else {
+						$result .= $matches[1][$i].','.$matches[2][$i].PHP_EOL;
+					}
 				}
-			}
-			#分类去重
-			if ($scheme){
-				$result = preg_replace('/.*#genre#\n/','',$result);
-			} else {
-				$result = txt_classification_oneness($result);
+			} else {//保留分组
+				preg_match_all('/#EXTINF.+group-title="(.+)",(.+)\n([^\n#]+)/',$list_data,$matches);
+				$result = $matches[1][0].',#genre#'.PHP_EOL.$matches[2][0].','.$matches[3][0].PHP_EOL;
+				for ($i=1;$i<count($matches[1]);$i++){
+					if (strpos($result,$matches[3][$i])){//url已存在则去重
+						continue;
+					} else {
+						$group = ($matches[1][$i] == $matches[1][$i-1])?'':$matches[1][$i].',#genre#'.PHP_EOL;//分组处理
+						$result .= $group.$matches[2][$i].','.$matches[3][$i].PHP_EOL;
+					}
+				}
+				$result = txt_classification_oneness($result);//分类去重
 			}
 			echo $result;
-		} else if (strpos($list_data,'#genre#')!==false){
+		} else if (strpos($list_data,',')!==false){
 			$list_data = str_replace("\n#","\n",$list_data);//去除行首#
 			$list_data = preg_replace('/([^e])#\n/',"$1\n",$list_data);//去除行尾#
 			#格式化txt
@@ -86,18 +93,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 					$list_data = preg_replace('/(.+,)(.+)#(.+)/',"$1$2\n$1$3",$list_data);
 				}
 			}
-			#分类去重
-			$list_data = txt_classification_oneness($list_data);
-			#以下实现url去重及转换
-			preg_match_all('/(.+),(.+)/',$list_data,$matches);
-			$result = '#EXTM3U'.PHP_EOL;
-			for($i=0;$i<count($matches[0]);$i++){
-				if ($matches[2][$i] == '#genre#'){
-					$classification = $matches[1][$i];
-				} else if (strpos($result,$matches[2][$i])){
-					continue;
-				} else {
-					$result .= '#EXTINF:-1 group-title="'.$classification.'",'.$matches[1][$i].PHP_EOL.$matches[2][$i].PHP_EOL;
+			if ($scheme||strpos($list_data,'#genre#')==false){//不保留分组或无分组
+				preg_match_all('/(.+),(.+)/',$list_data,$matches);
+				$result = '#EXTM3U'.PHP_EOL;
+				for($i=0;$i<count($matches[0]);$i++){
+					if ($matches[2][$i] == '#genre#'||strpos($result,$matches[2][$i])){
+						continue;
+					} else {
+						$result .= '#EXTINF:-1 ,'.$matches[1][$i].PHP_EOL.$matches[2][$i].PHP_EOL;
+					}
+				}
+			} else {//保留分组
+				#分类去重
+				$list_data = txt_classification_oneness($list_data);
+				#以下实现url去重及转换
+				preg_match_all('/(.+),(.+)/',$list_data,$matches);
+				$result = '#EXTM3U'.PHP_EOL;
+				for($i=0;$i<count($matches[0]);$i++){
+					if ($matches[2][$i] == '#genre#'){
+						$classification = $matches[1][$i];
+					} else if (strpos($result,$matches[2][$i])){
+						continue;
+					} else {
+						$result .= '#EXTINF:-1 group-title="'.$classification.'",'.$matches[1][$i].PHP_EOL.$matches[2][$i].PHP_EOL;
+					}
 				}
 			}
 			echo $result;
