@@ -4,6 +4,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$user_path_2 = $_POST["user_path_2"]??'';
 	$arr_data = $_POST["arr_data"]??'';
 	$scheme = $_POST["scheme"]??'';
+	$scheme2 = $_POST["scheme2"]??'';
 	if (strlen($user_path_1)>100||strlen($user_path_2)>40) {
 		die("Path or suffix's length has exceeded!");
 	} else if (empty($arr_data)) {
@@ -13,6 +14,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		$pattern = "/.*['\"](\w+)['\"].+>.+\/\/(.*)/";
 	} else {
 		$pattern = "/.+>.*['\"](\S+)['\"].*\/\/(.*)/";
+	}
+	if ($scheme2 == ''){
+		$arr_data = preg_replace("/.*\/\/.+>.+/",'',$arr_data);
+		$arr_data = preg_replace("/.*#.+>.+/",'',$arr_data);
+		$arr_data = preg_replace("/.*\/\*.+>[^\*]+\*\//",'',$arr_data);
+	} else {
+		$arr_data = str_replace('*/','',$arr_data);
 	}
 	if (preg_match_all($pattern,$arr_data,$matches)){
 		for($i = 0; $i < count($matches[1]); $i++){
