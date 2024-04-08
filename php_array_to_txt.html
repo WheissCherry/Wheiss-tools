@@ -30,7 +30,7 @@
 		background-color: #e6e6fa;
 	}
 	.submit-button {
-		margin:0.25% 8px 0.25% 200px;
+		margin:0.25% 8px 0.25% 66px;
 		padding: 4px 8px;
 	}
 	.copy-button {
@@ -46,26 +46,39 @@
 	<textarea name="user_path_2" class="user_path_2-textarea" placeholder="[inessential]$HD"></textarea>
 </div>
 <div>
-	<textarea name="arr_data" class="arr_data-textarea" placeholder="[essential]'cctv1' => 'CCTV1HD_30', //CCTV1
+	<textarea name="arr_data" class="arr_data-textarea" placeholder="[essential]'cctv1' => 'cctv1hd8m/80',//CCTV1
+/*	'cctv2' => 'cctv2hd8m/80',//CCTV2
+	'cctv3' => 'cctv38m/80',//CCTV3
+	'cctv4' => 'cctv4hd8m/80',//CCTV4*/
+//	'cctv5' => 'cctv58m/80',//CCTV5
+	'cctv6' => 'cctv6hd8m/80',//CCTV6
+#	'cctv7' => 'cctv7hd8m/80',//CCTV7
+	'cctv8' => 'cctv8hd8m/80',//CCTV8
 etc."></textarea>
 </div>
 <div>
 	<input type="checkbox" name="scheme" value="1" id="scheme">
 		<label for="scheme"><span class="p2" style="user-select:none !important;" id="un_copy_Para">Original ID</span></label>
+	<input type="checkbox" name="scheme2" value="1" id="scheme2">
+		<label for="scheme2"><span class="p2" style="user-select:none !important;" id="un_copy_Para">Ignore notes</span></label>
 	<button type="submit" class="submit-button" style="user-select:none !important;" id="un_copy_Para">Submit</button>
 	<button onclick="copyToClipboard()" class="copy-button" style="user-select:none !important;" id="un_copy_Para">Copy</button>
 </div>
 </form>
 <div>
 	<textarea id="result" class="result-textarea" readonly placeholder="CCTV1,https://host/filename/cctv1$HD
+CCTV6,https://host/filename/cctv6$HD
+CCTV8,https://host/filename/cctv8$HD
 Or select the option 'Original ID' to convert into
-CCTV1,https://host/filename/CCTV1HD_30$HD
+CCTV1,https://host/filename/cctv1hd8m/80$HD
+CCTV6,https://host/filename/cctv6hd8m/80$HD
+CCTV8,https://host/filename/cctv8hd8m/80$HD
 etc."></textarea>
 </div>
 	<hr>
 <div>
 	<span class="p1" style="user-select:none !important;" id="un_copy_Para"><a href="javascript:;" onClick="javascript:history.back(-1);">Previous</a></span>
-	<span class="p1" style="user-select:none !important;" id="un_copy_Para">Author:&nbsp;<a href="https://www.wheiss.com/">Wheiss</a>&emsp;Source Code:&nbsp;<a href="https://github.com/WheissCherry/Wheiss-tools/">Github</a>&emsp;Version:&nbsp;1.2</span>
+	<span class="p1" style="user-select:none !important;" id="un_copy_Para">Author:&nbsp;<a href="https://www.wheiss.com/">Wheiss</a>&emsp;Source Code:&nbsp;<a href="https://github.com/WheissCherry/Wheiss-tools/">Github</a>&emsp;Version:&nbsp;1.3</span>
 	<span class="p1" style="user-select:none !important;" id="un_copy_Para"><a href="/">Home</a></span>
 </div>
 
@@ -83,14 +96,16 @@ etc."></textarea>
 		const arr_data = document.querySelector('textarea[name="arr_data"]').value;
 		const user_path_1 = document.querySelector('textarea[name="user_path_1"]').value;
 		const user_path_2 = document.querySelector('textarea[name="user_path_2"]').value;
-		 const scheme = document.querySelector('input[name="scheme"]').checked ? document.querySelector('input[name="scheme"]').value : '';
+		const scheme = document.querySelector('input[name="scheme"]').checked ? document.querySelector('input[name="scheme"]').value : '';
+		const scheme2 = document.querySelector('input[name="scheme2"]').checked ? document.querySelector('input[name="scheme2"]').value : '';
 		fetch('api/php_array_to_txt.php', {
 			method: 'POST',
 			body: new URLSearchParams({
 				arr_data: arr_data,
 				user_path_1: user_path_1,
 				user_path_2: user_path_2,
-				scheme: scheme
+				scheme: scheme,
+				scheme2: scheme2
 })
 		})
 		.then(response => response.text())
