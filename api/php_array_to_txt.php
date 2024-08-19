@@ -14,7 +14,7 @@ if (strlen($user_path_1)>100||strlen($user_path_2)>40) {
 }
 //预处理
 if ($scheme2 == ''){
-	$arr_data = preg_replace("/^\s*\/\/.+/m",'',$arr_data);//因为使用了^只会匹配一次(字符串的开始)，所以要开启多行模式
+	$arr_data = preg_replace("/^\s*\/\/.+/m",'',$arr_data);
 	$arr_data = preg_replace("/^\s*#.+/m",'',$arr_data);
 	$arr_data = preg_replace("/.*\/\*.+[^\*]+\*\//",'',$arr_data);
 } else {
@@ -24,11 +24,11 @@ if ($scheme2 == ''){
 if (strpos($arr_data,'>') === false){//非指向型数组
 	if (preg_match('/[^\s]+\s*\/\/.+/',$arr_data,$matches)){//有频道名注释
 		if ($scheme == ''){
-			preg_match_all('/[^\s]+\s*\/\/(.+)/',$arr_data,$matches);
+			preg_match_all('/[^\s]+.*\/\/(.+)/',$arr_data,$matches);
 			for($i = 0; $i < count($matches[1]); $i++){
 				echo $matches[1][$i].','.$user_path_1.$i.$user_path_2.PHP_EOL;
 			}
-		} else {
+		} else {//原始ID模式
 			preg_match_all('/.*[\'"](.+)[\'"].*\/\/(.+)/',$arr_data,$matches);
 			for($i = 0; $i < count($matches[1]); $i++){
 				echo $matches[2][$i].','.$user_path_1.$matches[1][$i].$user_path_2.PHP_EOL;
@@ -40,7 +40,7 @@ if (strpos($arr_data,'>') === false){//非指向型数组
 } else {//指向型数组
 	if ($scheme == ''){
 		$pattern = "/.*['\"](\S+)['\"].+>.+\/\/(.*)/";
-	} else {
+	} else {//原始ID模式
 		$pattern = "/.+>.*['\"](\S+)['\"].*\/\/(.*)/";
 	}
 	if (preg_match_all($pattern,$arr_data,$matches)){
