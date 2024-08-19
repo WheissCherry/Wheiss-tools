@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta content="text/html" charset="UTF-8">
+<meta name="viewport" content="width=502">
+<title>Domains extract - Wheiss' tools</title>
+<link rel="Shortcut Icon" href="ico/illust_73070421.webp" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" href="css/default.css">
+</head>
+<body>
+<div>
+<h5 style="user-select:none !important;" id="un_copy_Para">A tool for extracting domains.</h5>
+</div>
+<style>
+	.user_path_1-textarea {
+		width: 139.2px;
+		height: 18.4px;
+	}
+	.user_path_2-textarea {
+		width: 300.8px;
+		height: 18.4px;
+	}
+	.user_path_3-textarea {
+		width: 239.2px;
+		height: 18.4px;
+	}
+	.arr_data-textarea {
+		width: 460px;/*宽度*/
+		height: 248px;/*高度*/
+	}
+	.result-textarea {
+		width: 460px;
+		height: 248px;
+		background-color: #e6e6fa;
+	}
+	.submit-button {
+		margin:0.25% 8px 0.25% 8px;
+		padding: 4px 8px;
+	}
+	.copy-button {
+		margin:0.25% 0.25% 0.25% 0px;
+		padding: 4px 12px;
+		background-color: #e6e6fa;
+	}
+	.container {
+    	display: flex;
+    	flex-direction: row;/*x轴向右排列*/
+    	justify-content: center;/*x轴居中对齐*/
+    	align-items: center;/*y轴居中对齐*/
+	}
+</style>
+<form action="api/domains_extract.php" method="POST">
+<div>
+	<textarea name="user_path_1" class="user_path_1-textarea" placeholder="[inessential]https://"></textarea>
+	<textarea name="user_path_2" class="user_path_2-textarea" placeholder="[inessential]/xxx"></textarea>
+</div>
+<div>
+	<textarea name="arr_data" class="arr_data-textarea" placeholder="[essential]support sites:
+—>https://site.ip138.com/
+—>https://www.itdog.cn/dns/
+
+Copy the query results and paste them here.You can also use shortcut keys with &quot;Ctrl+A&quot;、&quot;Ctrl+C&quot;、&quot;Ctrl+V&quot;.
+For example:
+fjydott.bestv.com.cn
+2024-01-02-----2024-01-119bwaz8y2.gzstv.com
+or
+61.170.41.165
+中国 贵州 贵阳 电信58.42.63.86
+2022-12-22-----2024-01-11223.210.5.174
+etc."></textarea>
+</div>
+<div class="container" style="height: auto;text-align: center;">
+	<input type="checkbox" name="scheme" value="1" id="scheme">
+		<label for="scheme" style="width: 80px;"><span class="p2" style="user-select:none !important;" id="un_copy_Para">IP Mode</span></label>
+	<textarea name="user_path_3" class="user_path_3-textarea" placeholder="[pattern]/.*-cdn\.ysp\.cctv\.cn/"></textarea>
+	<button type="submit" class="submit-button" style="user-select:none !important;" id="un_copy_Para">Submit</button>
+	<button onclick="copyToClipboard()" class="copy-button" style="user-select:none !important;" id="un_copy_Para">Copy</button>
+</div>
+</form>
+<div>
+	<textarea id="result" class="result-textarea" readonly placeholder="https://fjydott.bestv.com.cn/xxx
+https://9bwaz8y2.gzstv.com/xxx
+
+or select the 'IP Mode' to extract with IPs only.
+https://61.170.41.165/xxx
+https://58.42.63.86/xxx
+https://223.210.5.174/xxx
+etc.
+
+You can also match them with custom regular expressions."></textarea>
+</div>
+	<hr>
+<div>
+	<span class="p1" style="user-select:none !important;" id="un_copy_Para"><a href="javascript:;" onClick="javascript:history.back(-1);">Previous</a></span>
+	<span class="p1" style="user-select:none !important;" id="un_copy_Para">Author:&nbsp;<a href="https://www.wheiss.com/">Wheiss</a>&emsp;Source Code:&nbsp;<a href="https://github.com/WheissCherry/Wheiss-tools/">Github</a>&emsp;Version:&nbsp;<a href="https://github.com/WheissCherry/Wheiss-tools/releases/tag/v1.9">1.0</a></span>
+	<span class="p1" style="user-select:none !important;" id="un_copy_Para"><a href="/">Home</a></span>
+</div>
+
+<script>
+	function copyToClipboard() {
+		const resultTextarea = document.getElementById('result');
+		resultTextarea.select();
+		document.execCommand('copy');
+	}
+
+	const form = document.querySelector('form');
+	form.addEventListener('submit', function(event) {
+		event.preventDefault();
+
+		const arr_data = document.querySelector('textarea[name="arr_data"]').value;
+		const user_path_1 = document.querySelector('textarea[name="user_path_1"]').value;
+		const user_path_2 = document.querySelector('textarea[name="user_path_2"]').value;
+		const user_path_3 = document.querySelector('textarea[name="user_path_3"]').value;
+		 const scheme = document.querySelector('input[name="scheme"]').checked ? document.querySelector('input[name="scheme"]').value : '';
+		fetch('api/domains_extract.php', {
+			method: 'POST',
+			body: new URLSearchParams({
+				arr_data: arr_data,
+				user_path_1: user_path_1,
+				user_path_2: user_path_2,
+				user_path_3: user_path_3,
+				scheme: scheme
+})
+		})
+		.then(response => response.text())
+		.then(processedData => {
+			const resultTextarea = document.getElementById('result');
+			resultTextarea.value = processedData;
+		});
+	});
+	document.getElementById("un_copy_Para").oncopy = function(event) {
+		event.clipboardData.setData("text/plain", "");
+		event.preventDefault();
+	};
+</script>
+</body>
+</html>
