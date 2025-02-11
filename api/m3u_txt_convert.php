@@ -37,16 +37,23 @@ if ($req_url){
 	}
 }
 if ($list_data){
-	$list_data = preg_replace('/\t+/',"",$list_data);//去除制表符
-	$list_data = preg_replace('/\n+/',"\n",$list_data);//去除连续空白行
-	$list_data = preg_replace('/#+/',"#",$list_data);//去除连续#
+	#预处理，str_replace的使用没必要先判断，因为没找到也是查找一次，相当于自带判断一次。
+	#preg_replace的使用先判断较好，因为没找到时就不执行正则，一般认为正则比较消耗时间。而strpos判断花费的时间几乎可以忽略不计。
+	$list_data = str_replace("\t","",$list_data);//去除制表符
+	if (strpos($list_data,"\n\n")!==false) $list_data = preg_replace('/\n\n+/',"\n",$list_data);//去除连续空白行
+	if (strpos($list_data,"##")!==false) $list_data = preg_replace('/##+/',"#",$list_data);//去除连续#
 	#初步格式化m3u列表
 	if (strpos($list_data,'#EXTM3U')!==false){//M3U格式
+		if (strpos($list_data," #EXTINF")!==false) {//数据来源为网页直接复制，且所有数据均显示在一行时
+			$list_data = str_replace("×tamp","&timestamp",$list_data);
+			$list_data = str_replace(" #EXTINF","\n#EXTINF",$list_data);
+			$list_data = preg_replace("/ (\w+:\/\/)/","\n$1",$list_data);
+		}
+#		$list_data = preg_replace('/([^\n])#EXTINF/',"$1\n#EXTINF",$list_data);//#EXTINF自动换行，应该只有上面的情况，故此步骤作废
+		#以下两种情况很少见，但不代表没有
 		$list_data = str_replace("#\n#","\n#",$list_data);//去除行尾#
-		$list_data = preg_replace('/([^\n])#EXTINF/',"$1\n#EXTINF",$list_data);//#EXTINF自动换行
-		if (strpos($list_data,'#EXTVLCOPT')!==false){
-			$list_data = preg_replace("/#EXTVLCOPT.+\n/",'',$list_data);//去除#EXTVLCOPT行
-		}#以下实现格式化m3u中的链接
+		if (strpos($list_data,'#EXTVLCOPT')!==false) $list_data = preg_replace("/#EXTVLCOPT.+\n/",'',$list_data);//去除#EXTVLCOPT行
+		#以下实现格式化m3u中的链接
 		if (preg_match_all('/.+#.+/',$list_data,$match_urls)){//捕获所有需要格式化的项目
 			foreach($match_urls[0] as $match_url){//对于匹配到的每一项，统计#的个数
 				preg_match_all('/#/',$match_url,$match_count);
@@ -83,8 +90,15 @@ if ($list_data){
 		}
 		echo $result;
 	} else if (strpos($list_data,',')!==false){
-		$list_data = str_replace("\n#","\n",$list_data);//去除行首#
-		$list_data = preg_replace('/([^e])#\n/',"$1\n",$list_data);//去除行尾#
+		if (strpos($list_data,'#genre# ')!==false) {//数据来源为网页直接复制，且所有数据均显示在一行时
+			echo "#数据来源为网页直接复制，且所有数据均显示在一行的txt格式，转换的结果可能不准确，建议在原网页右键查看网页源代码后再复制。或者直接使用订阅链接模式来进行转换\n";
+			$list_data = str_replace("×tamp","&timestamp",$list_data);
+			$list_data = str_replace("#genre# ","#genre#\n",$list_data);
+			$list_data = preg_replace("/(.+?,\w+:\/\/[^ ]+) /","$1\n",$list_data);
+		}
+		#以下两种情况很少见，但不代表没有
+		if ($list_data[0]=="#"||strpos($list_data,"\n#")!==false) $list_data = preg_replace("/^#.+\n/m","",$list_data);//去除以#开头的行
+		$list_data = preg_replace("/([^e])#\n/","$1\n",$list_data);//去除非分组的行尾#
 		#格式化txt
 		if (preg_match_all('/.+,.+#.+/',$list_data,$match_urls)){
 			for ($i=0;$i<count($match_urls[0]);$i++){
@@ -97,7 +111,7 @@ if ($list_data){
 			}
 		}
 		if ($scheme||strpos($list_data,'#genre#')==false){//不保留分组或无分组
-			preg_match_all('/(.+),(.+)/',$list_data,$matches);
+			preg_match_all('/(.+?),(.+)/',$list_data,$matches);//前者使用非贪婪匹配，以适配URL含,的情况
 			$result = '#EXTM3U'.PHP_EOL;
 			for($i=0;$i<count($matches[0]);$i++){
 				if ($matches[2][$i] == '#genre#'||strpos($result,$matches[2][$i])){
